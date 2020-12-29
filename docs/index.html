@@ -36,7 +36,7 @@ function MQTTconnect()
 
 function sayHello()
 {
-   message = new Paho.MQTT.Message("Hallo Raimund.");       // punkt ist wichtig!!!!
+   message = new Paho.MQTT.Message("This is a test.");       // punkt ist wichtig!!!!
    message.destinationName = "ghettoblaster/say";
    mqtt.send(message);
 }

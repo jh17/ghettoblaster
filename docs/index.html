@@ -29,6 +29,7 @@ function MQTTconnect()
    {
          timeout: 3,
          onSuccess: onConnect,
+         useSSL: true 
    };
 
    mqtt.connect(options); //connect

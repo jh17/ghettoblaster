@@ -3,9 +3,82 @@
 <head>
 <meta charset="utf-8"/>
 <title>GHETTOBLASTER CONTROL</title>
+<style> 
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.button1 {
+  background-color: white; 
+  color: black; 
+  border: 2px solid #4CAF50;
+}
+
+.button1:hover {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.button2 {
+  background-color: white; 
+  color: black; 
+  border: 2px solid #008CBA;
+}
+
+.button2:hover {
+  background-color: #008CBA;
+  color: white;
+}
+
+.button3 {
+  background-color: white; 
+  color: black; 
+  border: 2px solid #f44336;
+}
+
+.button3:hover {
+  background-color: #f44336;
+  color: white;
+}
+
+.button4 {
+  background-color: white;
+  color: black;
+  border: 2px solid #e7e7e7;
+}
+
+.button4:hover {background-color: #e7e7e7;}
+
+.button5 {
+  background-color: white;
+  color: black;
+  border: 2px solid #555555;
+}
+
+.button5:hover {
+  background-color: #555555;
+  color: white;
+}
+.tableright {
+	width: 100px;
+}
+.table1 {
+	width: 100%;
+}
+</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript">
 </script>
-<script type = "text/javascript" language = "javascript">
+<script type = "text/javascript" language = "javascript"> //style="background-color:red; font-size: 24px; border-radius: 12px; border-color:red; color:white"
 var mqtt;
 var reconnectTimeout = 2000;
 var host="broker.hivemq.com";
@@ -15,12 +88,10 @@ function onConnect() {
    // Once a connection has been made, make a subscription and send a message.
 
    console.log("Connected ");
-   document.getElementById("logtextarea").value += "\n" + "CONNECTED";
-   document.getElementById("logtextarea").scrollTop=document.getElementById("logtextarea").scrollHeight;
+   document.getElementById("logtextarea").value += "\n" + "Ich bin daaaaaaaaaaaaaaaaa!";
    mqtt.subscribe("ghettoblaster/#");
    mqtt.onMessageArrived = onMessageArrived;
-   mqtt.onConnectionLost = onConnectionLost;
-
+   mqtt.onConnectionLost= onConnectionLost;
    //mqtt.subscribe("sensor1");
    //message = new Paho.MQTT.Message("Hello World");
    //message.destinationName = "ghettoblaster/test";
@@ -29,7 +100,7 @@ function onConnect() {
 function MQTTconnect() 
 {
    console.log("connecting to "+ host +" "+ port);
-   mqtt = new Paho.MQTT.Client(host,port,"clientjsHannes");
+   mqtt = new Paho.MQTT.Client(host,port,"clientjs");
    //document.write("connecting to "+ host);
    var options = 
    {
@@ -38,31 +109,59 @@ function MQTTconnect()
    };
 
    mqtt.connect(options); //connect
+   
 }
 
-// called when a message arrives
 function onMessageArrived(message) {
    console.log("onMessageArrived:" + message.destinationName + " = " + message.payloadString);
    document.getElementById("logtextarea").value += "\n" + message.destinationName + " = " + message.payloadString;
    document.getElementById("logtextarea").scrollTop=document.getElementById("logtextarea").scrollHeight;
 }
-// called when the client loses its connection
-function onConnectionLost(responseObject) {
-  if (responseObject.errorCode !== 0) {
-   console.log("onConnectionLost:"+responseObject.errorMessage);
-   document.getElementById("logtextarea").value += "\n" + "CONNECTION LOST!!!!";
-   document.getElementById("logtextarea").scrollTop=document.getElementById("logtextarea").scrollHeight;
-  }
-}
+function onConnectionLost(responseobject) {
+	document.getElementById("logtextarea").value += "\n" + "Bin weg du Sack!!!!!!!!!!!";
+	document.getElementById("logtextarea").scrollTop=document.getElementById("logtextarea").scrollHeight;
+	}
 function sayHello()
 {
-   message = new Paho.MQTT.Message("So I say good bye now.");       // punkt ist wichtig!!!!
+   message = new Paho.MQTT.Message("This is a test.");       // punkt ist wichtig!!!!
+   message.destinationName = "ghettoblaster/say";
+   mqtt.send(message);
+}
+function sayText(textgeil)
+{
+	var str1 = textgeil.concat(".");
+   message = new Paho.MQTT.Message(str1);       // punkt ist wichtig!!!!
    message.destinationName = "ghettoblaster/say";
    mqtt.send(message);
 }
 
-function playTune()
-{  // am ende "p" für pause! wichtig!!!
+function myFunction() {
+  var x = document.getElementById("myText").value;
+  sayText(x);
+}
+
+function playTune(TuneName)
+{  
+	switch(TuneName) {
+		case "Rudolph":
+			message = new Paho.MQTT.Message("Rudolph:d=8,o=5,b=250:g,4a,g,4e,4c6,4a,2g.,g,a,g,a,4g,4c6,2b.,4p,f,4g,f,4d,4b,4a,2g.,g,a,g,a,4g,4a,2e.,4p,g,4a,a,4e,4c6,4a,2g.,g,a,g,a,4g,4c6,2b.,4p,f,4g,f,4d,4b,4a,2g.,g,a,g,a,4g,4d6,2c.6,4p,4a,4a,4c6,4a,4g,4e,2g,4d,4e,4g,4a,4b,4b,2b,4c6,4c6,4b,4a,4g,4f,2d,g,4a,g,4e,4c6,4a,2g.,g,a,g,a,4g,4c6,2b.,4p,f,4g,f,4d,4b,4a,2g.,4g,4a,4g,4a,2g,2d6,1c6,p");
+			break;
+		case "JingleBells":
+			message = new Paho.MQTT.Message("JingleBell:d=8,o=5,b=112:32p,a,a,4a,a,a,4a,a,c6,f.,16g,2a,a#,a#,a#.,16a#,a#,a,a.,16a,a,g,g,a,4g,4c6,p");
+			break;
+		case "TakeOnMe":
+			message = new Paho.MQTT.Message("TakeOnMe:d=4,o=4,b=160:8f#5,8f#5,8f#5,8d5,8p,8b,8p,8e5,8p,8e5,8p,8e5,8g#5,8g#5,8a5,8b5,8a5,8a5,8a5,8e5,8p,8d5,8p,8f#5,8p,8f#5,8p,8f#5,8e5,8e5,8f#5,8e5,8f#5,8f#5,8f#5,8d5,8p,8b,8p,8e5,8p,8e5,8p,8e5,8g#5,8g#5,8a5,8b5,8a5,8a5,8a5,8e5,8p,8d5,8p,8f#5,8p,8f#5,8p,8f#5,8e5,8e5,p");
+			break;
+		case "20thCenFox":
+			message = new Paho.MQTT.Message("20thCenFox:d=16,o=5,b=140:b,8p,b,b,2b,p,c6,32p,b,32p,c6,32p,b,32p,c6,32p,b,8p,b,b,b,32p,b,32p,b,32p,b,32p,b,32p,b,32p,b,32p,g#,32p,a,32p,b,8p,b,b,2b,4p,8e,8g#,8b,1c#6,8f#,8a,8c#6,1e6,8a,8c#6,8e6,1e6,8b,8g#,8a,2b,p");
+			break;
+		case "MissionImp":
+			message = new Paho.MQTT.Message("MissionImp:d=16,o=6,b=95:32d,32d#,32d,32d#,32d,32d#,32d,32d#,32d,32d,32d#,32e,32f,32f#,32g,g,8p,g,8p,a#,p,c7,p,g,8p,g,8p,f,p,f#,p,g,8p,g,8p,a#,p,c7,p,g,8p,g,8p,f,p,f#,p,a#,g,2d,32p,a#,g,2c#,32p,a#,g,2c,a#5,8c,2p,32p,a#5,g5,2f#,32p,a#5,g5,2f,32p,a#5,g5,2e,d#,8d,p");
+			break;
+		default:
+			message = new Paho.MQTT.Message("Default:d=8,o=5,b=112:4a2,p");
+	}
+// am ende "p" für pause! wichtig!!!
 //   message = new Paho.MQTT.Message("Rudolph:d=8,o=5,b=250:g,4a,g,4e,4c6,4a,2g.,g,a,g,a,4g,4c6,2b.,4p,f,4g,f,4d,4b,4a,2g.,g,a,g,a,4g,4a,2e.,4p,g,4a,a,4e,4c6,4a,2g.,g,a,g,a,4g,4c6,2b.,4p,f,4g,f,4d,4b,4a,2g.,g,a,g,a,4g,4d6,2c.6,4p,4a,4a,4c6,4a,4g,4e,2g,4d,4e,4g,4a,4b,4b,2b,4c6,4c6,4b,4a,4g,4f,2d,g,4a,g,4e,4c6,4a,2g.,g,a,g,a,4g,4c6,2b.,4p,f,4g,f,4d,4b,4a,2g.,4g,4a,4g,4a,2g,2d6,1c6,p");
 //   message = new Paho.MQTT.Message("JingleBell:d=8,o=5,b=112:32p,a,a,4a,a,a,4a,a,c6,f.,16g,2a,a#,a#,a#.,16a#,a#,a,a.,16a,a,g,g,a,4g,4c6,p");
 //   message = new Paho.MQTT.Message("TwinkleT:d=4,o=5,b=60:16c#6,16c#6,16g#6,16g#6,16a#6,16a#6,16g#6,16p,16f#6,16f#6,16e#6,16e#6,16d#6,8c#6,16p,16g#6,16g#6,16f#6,16f#6,16e#6,16e#6,8d#6,16p,16g#6,16f#6,16f#6,16e#6,16e#6,8d#6,16p,16c#6,16c#6,16g#6,16g#6,16a#6,16g#6,16p,16f#6,16f#6,16e#6,16e#6,16d#6,16d#6,8c#6,p");
@@ -83,7 +182,7 @@ function playTune()
 //   message = new Paho.MQTT.Message("Flinstones:d=4,o=5,b=40:32p,16f6,16a#,16a#6,32g6,16f6,16a#.,16f6,32d#6,32d6,32d6,32d#6,32f6,16a#,16c6,d6,16f6,16a#.,16a#6,32g6,16f6,16a#.,32f6,32f6,32d#6,32d6,32d6,32d#6,32f6,16a#,16c6,a#,16a6,16d.6,16a#6,32a6,32a6,32g6,32f#6,32a6,8g6,16g6,16c.6,32a6,32a6,32g6,32g6,32f6,32e6,32g6,8f6,16f6,16a#.,16a#6,32g6,16f6,16a#.,16f6,32d#6,32d6,32d6,32d#6,32f6,16a#,16c.6,32d6,32d#6,32f6,16a#,16c.6,32d6,32d#6,32f6,16a#6,16c7,8a#.6,p");
 //   message = new Paho.MQTT.Message("Jeopardy:d=4,o=6,b=125:c,f,c,f5,c,f,2c,c,f,c,f,a.,8g,8f,8e,8d,8c#,c,f,c,f5,c,f,2c,f.,8d,c,a#5,a5,g5,f5,p,d#,g#,d#,g#5,d#,g#,2d#,d#,g#,d#,g#,c.7,8a#,8g#,8g,8f,8e,d#,g#,d#,g#5,d#,g#,2d#,g#.,8f,d#,c#,c,p,a#5,p,g#.5,d#,g#,p");
 //   message = new Paho.MQTT.Message("Gadget:d=16,o=5,b=50:32d#,32f,32f#,32g#,a#,f#,a,f,g#,f#,32d#,32f,32f#,32g#,a#,d#6,4d6,32d#,32f,32f#,32g#,a#,f#,a,f,g#,f#,8d#,p");
-   message = new Paho.MQTT.Message("Smurfs:d=32,o=5,b=200:4c#6,16p,4f#6,p,16c#6,p,8d#6,p,8b,p,4g#,16p,4c#6,p,16a#,p,8f#,p,8a#,p,4g#,4p,g#,p,a#,p,b,p,c6,p,4c#6,16p,4f#6,p,16c#6,p,8d#6,p,8b,p,4g#,16p,4c#6,p,16a#,p,8b,p,8f,p,4f#,p");
+//   message = new Paho.MQTT.Message("Smurfs:d=32,o=5,b=200:4c#6,16p,4f#6,p,16c#6,p,8d#6,p,8b,p,4g#,16p,4c#6,p,16a#,p,8f#,p,8a#,p,4g#,4p,g#,p,a#,p,b,p,c6,p,4c#6,16p,4f#6,p,16c#6,p,8d#6,p,8b,p,4g#,16p,4c#6,p,16a#,p,8b,p,8f,p,4f#,p");
 //   message = new Paho.MQTT.Message("MahnaMahna:d=16,o=6,b=125:c#,c.,b5,8a#.5,8f.,4g#,a#,g.,4d#,8p,c#,c.,b5,8a#.5,8f.,g#.,8a#.,4g,8p,c#,c.,b5,8a#.5,8f.,4g#,f,g.,8d#.,f,g.,8d#.,f,8g,8d#.,f,8g,d#,8c,a#5,8d#.,8d#.,4d#,8d#.,p");
 //   message = new Paho.MQTT.Message("LeisureSuit:d=16,o=6,b=56:f.5,f#.5,g.5,g#5,32a#5,f5,g#.5,a#.5,32f5,g#5,32a#5,g#5,8c#.,a#5,32c#,a5,a#.5,c#.,32a5,a#5,32c#,d#,8e,c#.,f.,f.,f.,f.,f,32e,d#,8d,a#.5,e,32f,e,32f,c#,d#.,c#,p");
 //   message = new Paho.MQTT.Message("MissionImp:d=16,o=6,b=95:32d,32d#,32d,32d#,32d,32d#,32d,32d#,32d,32d,32d#,32e,32f,32f#,32g,g,8p,g,8p,a#,p,c7,p,g,8p,g,8p,f,p,f#,p,g,8p,g,8p,a#,p,c7,p,g,8p,g,8p,f,p,f#,p,a#,g,2d,32p,a#,g,2c#,32p,a#,g,2c,a#5,8c,2p,32p,a#5,g5,2f#,32p,a#5,g5,2f,32p,a#5,g5,2e,d#,8d,p");
@@ -101,12 +200,26 @@ function playRadio(radioStation)
 //   message = new Paho.MQTT.Message("http://strm112.1.fm/blues_mobile_mp3");
 //   message = new Paho.MQTT.Message("http://jazz.streamr.ru/jazz-64.mp3");
 //   message = new Paho.MQTT.Message("http://radio886.fluidstream.eu/886_live.mp3");
-//   message = new Paho.MQTT.Message("http://radio886.fluidstream.eu/886_hardrock.mp3");
-//   message = new Paho.MQTT.Message("http://orf-live.ors-shoutcast.at/oe1-q2a");
+//   message = new Paho.MQTT.Message("http://radio886.fluidstream.eu/886_hardrock.mp3");  
    message = new Paho.MQTT.Message(radioStation);
 
    message.destinationName = "ghettoblaster/stream";
    mqtt.send(message);
+}
+function RadioButtonklick()
+{
+	var e = document.getElementById("radioSender");
+	var url = e.value;
+	playRadio(url);
+
+}
+
+function MusikNice()
+{
+	var e = document.getElementById("MusikSpielen");
+	var text = e.value;
+	playTune(text);
+
 }
 
 function volumePlus()
@@ -123,6 +236,12 @@ function volumeMinus()
    mqtt.send(message);
 }
 
+function Stop()
+{
+   message = new Paho.MQTT.Message("nix");
+   message.destinationName = "ghettoblaster/stop";
+   mqtt.send(message);
+}
 
 
 </script>
@@ -132,19 +251,54 @@ function volumeMinus()
 <script>
 MQTTconnect();
 </script>
+<table class="table1">
+	<tr>
+		<td>
+	
+			<button onclick="sayHello()">sayHello</button>
+			<button onclick="sayNix()">sayLOL</button>
+			<br><br><br>
+			Wähle die Musik:
+			<select id="MusikSpielen">
+				<option value="MissionImp">MissionImp</option>
+				<option value="Rudolph">Rudolph</option>
+				<option value="JingleBells">JingleBells</option>
+				<option value="TakeOnMe">TakeOnMe</option>
+				<option value="20thCenFox">20thCenFox</option>
+			  </select>
+			<button onclick="MusikNice()">Spiel die Musik du Sack </button>
+			<br><br>
+			  Wähle einen Radiosender:
+			  <select id="radioSender">
+				<option value="http://radio886.fluidstream.eu/886_live.mp3">88.6</option>
+				<option value="http://onair.krone.at/kronehit.mp3">Kronehit</option>
+				<option value="http://onair.krone.at/kronehit-vollgas.mp3">Vollgas</option>
+				<option value="http://orf-live.ors-shoutcast.at/oe1-q2a">ö1</option>
+			  </select>
+			  <button class="button button2" onclick="RadioButtonklick()">Spiel den Radio du Sack </button>
+			  <button class="button button3" onclick="Stop()">Stop</button>
 
-<button onclick="sayHello()">sayHello</button>
-<br><br><br>
-<button onclick="playTune()">playTune</button>
-<br><br><br>
-<button onclick="playRadio('http://radio886.fluidstream.eu/886_hardrock.mp3')">playRadio</button>
-<br><br><br>
-<button onclick="volumePlus()">volumePlus</button>
-<br>
-<button onclick="volumeMinus()">volumeMinus</button>
-<br>
-<br>
-<textarea id="logtextarea" cols="100" rows="10">NOT CONNECTED</textarea>
+			<br><br><br>
+			<button onclick="volumePlus()">volumePlus</button>
+			<br>
+			<button onclick="volumeMinus()">volumeMinus</button>
+			<br><br>
+			<input type="text" id="myText" value=""
+					onkeydown = "if (event.keyCode == 13)
+									document.getElementById('Abfahrtbutton').click()">
+			<button onclick="myFunction()" id = 'Abfahrtbutton'>Abfahrt</button>
+			<br><br><br><br><br><br><br
+			</td> 
+			<td class="tableright"> 
+				<textarea id="logtextarea" cols="100" rows="10"></textarea>
+			</td>
+		</tr>
+	</table>	
+		
+
+
+
+<p id="demo"></p>
 
 
 </body>  
